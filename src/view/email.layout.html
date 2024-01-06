@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <div
+            class="body"
+            style="
+                color: black !important;
+                font-family: 'Open Sans', sans-serif !important;
+                width: 558px !important;
+                background: #f5f5f5 !important;
+                margin: 0 auto !important;
+                border-radius: 15px !important;
+                font-size: 16px !important;
+            "
+        >
+            <div
+                class="otp-container"
+                style="padding: 18px 18px !important; color: black !important"
+            >
+                <div>
+                    <img
+                        style="width: 100%; border-radius: 15px !important"
+                        src="https://firebasestorage.googleapis.com/v0/b/demo2-37f89.appspot.com/o/Asset%201%404x-8.png?alt=media&token=42d4ece0-f6c1-45f0-9abd-4255b63c42dc"
+                        alt=""
+                    />
+                </div>
+                <h4 style="margin: none !important; color: black !important">
+                    Hello 👋,
+                </h4>
+                <p>Your OTP is</p>
+                <div
+                    style="
+                        text-align: center;
+                        width: 100%;
+                        padding: 14px 0 !important;
+                    "
+                    class="button-container"
+                >
+                    <a
+                        id="copyButton"
+                        style="
+                            all: unset !important;
+                            background: #1b1a1e !important;
+                            color: #ffa52e !important;
+                            padding: 10px 100px !important;
+                            text-align: center !important;
+                            border-radius: 4px !important;
+                        "
+                    >
+                        <strong style="font-size: 18px !important"
+                            >123456</strong
+                        ></a
+                    >
+                </div>
+                <div class="des-container" style="padding-top: 20px !important">
+                    <p>
+                        The code is requested from the TechHub website and is
+                        valid for <strong>1 minutes.</strong>
+                    </p>
+                    <p>Enjoy your time with TechHub!!! (●'◡'●)</p>
+                    <p style="font-weight: bold; font-style: italic">
+                        (Don't share this code with anybody)
+                    </p>
+                    <p>Thank you !!!</p>
+                </div>
+            </div>
+            <footer
+                style="
+                    font-size: 13px !important;
+                    background: #1b1a1f !important;
+                    color: white !important;
+                    text-align: center !important;
+                    font-weight: 500 !important;
+                    padding: 10px 0 !important;
+                    border-bottom-left-radius: 15px !important; /* Đặt border-radius cho phần dưới */
+                    border-bottom-right-radius: 15px !important; /* Đặt border-radius cho phần dưới */
+                "
+            >
+                © 2023 TechHub. All Rights Reserved
+            </footer>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            document
+                .getElementById("copyButton")
+                .addEventListener("click", function () {
+                    var otpText =
+                        document.getElementById("copyButton").innerText;
+                    var tempInput = document.createElement("input");
+                    tempInput.value = otpText;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(tempInput);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        },
+                    });
+                    Toast.fire({
+                        icon: "success",
+                        title: "OTP has been copied",
+                    });
+                });
+        </script>
+    </body>
+</html>

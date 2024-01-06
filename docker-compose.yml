@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # Nodejs
+  node:
+    container_name: node-app
+    image: node:19.1.0
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - 6890:6890
+    command: bash -c "npm install&&npm start"
+    depends_on:
+      - mongo-primary
+    environment:
+      - APP_PORT_DEV=${APP_PORT_DEV}
+      - DB_DEV_HOST_NAME=host.docker.internal
+      - DB_DEV_PORT=${DB_DEV_PORT}
+      - DB_DEV_NAME=${DB_DEV_NAME}
+      - DB_DEV_USERNAME=${DB_DEV_USERNAME}
+      - DB_DEV_PASSWORD=${DB_DEV_PASSWORD}
+      - DB_DEV_CLUSTER_NAME=${DB_DEV_CLUSTER_NAME}
+      - GOOGLE_PASSWORD=${GOOGLE_PASSWORD}
+      - GOOGLE_USERNAME=${GOOGLE_USERNAME}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT= ${MAIL_PORT}
+    networks:
+      - mongo_replica
+  # MongoDB service
+  mongo-primary:
+    container_name: mongo-primary
+    image: mongo
+    ports:
+      - 27001:27017
+    command: mongod --replSet "rs0"
+    environment:
+      - MONGO_INITDB_REPLICASET=rs0
+    restart: always
+    volumes:
+      - ./mongodb/primary:/data/db
+    networks:
+      - mongo_replica
+
+  mongo_secondary-1:
+    container_name: mongo_secondary-1
+    image: mongo
+    ports:
+      - 27002:27017
+    command: mongod --replSet "rs0"
+    volumes:
+      - ./mongodb/secondary1:/data/db
+    environment:
+      - MONGO_INITDB_REPLICASET=rs0
+    restart: always
+    networks:
+      - mongo_replica
+
+  mongo_secondary-2:
+    container_name: mongo_secondary-2
+    image: mongo
+    ports:
+      - 27003:27017
+    command: mongod --replSet "rs0"
+    volumes:
+      - ./mongodb/secondary2:/data/db
+    environment:
+      - MONGO_INITDB_REPLICASET=rs0
+    restart: always
+    networks:
+      - mongo_replica
+
+# Volumes and networks
+volumes:
+  mongo-primary:
+  mongo_secondary-1:
+  mongo_secondary-2:
+
+
+networks:
+  mongo_replica:
+    driver: bridge

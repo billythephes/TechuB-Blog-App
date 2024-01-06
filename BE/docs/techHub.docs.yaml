@@ -1,0 +1,3581 @@
+openapi: 3.0.3
+info:
+  title: Documents TechHub by Swagger - OpenAPI 1.0
+  description: |-
+    This is a sample TechHub Server based on the OpenAPI 3.0 specification.  You can find out more about
+    TechHub at [Github](https://github.com/NATNgoc/Blog-Project). In the third iteration of the TechHub, we've switched to the design first approach!
+    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
+    Some useful links:
+    - [The TechHub repository](https://github.com/NATNgoc/Blog-Project)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  contact:
+    email: 21522379@gm.uit.edu.vn
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: https://localhost:6890/api/v1
+  - url: http://localhost:6890/api/v1
+tags:
+  - name: series
+    description: Series is a group of post which has the same topic
+  - name: otps
+    description: OTP code for login, forgot password section
+  - name: users
+    description: Everything features of user
+  - name: access
+    description: Everything about accessing into system
+  - name: categories
+    description: Categories are a flexible categorization system for posts. You can create, edit, and delete categories according to your needs.
+  - name: follows
+    description: This table contains information about user access controls within the system, including who can follow whom and what permissions those relationships grant.
+  - name: likes
+    description: Processing like, unlike a post
+  - name: comments
+    description: Processing comment, unComment a post
+  - name: posts
+    description: Processing comment, unComment a post
+paths:
+  /posts:
+    post:
+      tags:
+        - posts
+      summary: Create a new post
+      security:
+        - BearerAuth: []
+      description: This can only be done by the logged in user.
+      operationId: createNewPost
+      requestBody:
+        required: true
+        description: Details of the post to be created
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                post_title:
+                  type: string
+                  description: The title of the post
+                  example: "Việt Nam - Trung Quốc: Phát triển vững chắc, ổn định, lâu dài"
+                post_content:
+                  type: string
+                  description: The content of the post
+                  example: "Tổng Bí thư Nguyễn Phú Trọng tin tưởng chuyến thăm của Tổng Bí thư, Chủ tịch nước Trung Quốc Tập Cận Bình là một dấu mốc lịch sử mới, đưa quan hệ giữa hai Đảng, hai nước lên tầm cao mới. Chiều 12-12, tại trụ sở Trung ương Đảng, ngay sau lễ đón chính thức, Tổng Bí thư Nguyễn Phú Trọng đã hội đàm với Tổng Bí thư, Chủ tịch nước Trung Quốc (TQ) Tập Cận Bình. TQ là ưu tiên hàng đầu, sự lựa chọn chiến lược Phát biểu tại hội đàm, Tổng Bí thư Nguyễn Phú Trọng bày tỏ vui mừng và nhiệt liệt chào mừng Tổng Bí thư, Chủ tịch nước TQ Tập Cận Bình cùng phu nhân và đoàn đại biểu cấp cao Đảng, nhà nước TQ sang thăm cấp Nhà nước Việt Nam (VN) đúng vào dịp hai nước kỷ niệm 15 năm thiết lập quan hệ đối tác hợp tác chiến lược toàn diện (2008-2023). Tổng Bí thư Nguyễn Phú Trọng tin tưởng chuyến thăm là một dấu mốc lịch sử mới, đưa quan hệ giữa hai Đảng, hai nước lên tầm cao mới, đáp ứng nguyện vọng và lợi ích chung của nhân dân hai nước, vì hòa bình, hợp tác và phát triển của khu vực và thế giới."
+                post_thumb_url:
+                  type: string
+                  format: URL
+                  description: The thumbnail URL of the post
+                  example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-13//1702425360-tong-bi-thu-nguyen-phu-trong-hoi-dam-voi-ong-tap-can-binh-tham-viet-nam-1-5546-3289-9946-width1200height799.jpg"
+                post_description:
+                  type: string
+                  description: The description of the post
+                  example: "Sau hội đàm cấp cao, Tổng Bí thư hai nước đã cùng xem và nghe giới thiệu về 36 văn bản thỏa thuận hợp tác trên nhiều lĩnh vực được ký kết giữa các ban, bộ, ngành, địa phương hai nước, thể hiện thành quả phong phú, toàn diện mà hai bên đạt được trong chuyến thăm lần này."
+                post_category_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: The category IDs of the post
+                  example: ["657537b29ae40316265de5b4"]
+              required:
+                - post_title
+                - post_content
+                - post_thumb_url
+                - post_description
+                - post_category_ids
+      responses:
+        201:
+          description: successful create new series
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Create series succesfully!
+                  statusCode:
+                    type: integer
+                    example: 201
+                  metaData:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "658173cb38b8fe0892641d42"
+                      post_user_id:
+                        type: string
+                        example: "656a003aca3b51815e15a94a"
+                      post_title:
+                        type: string
+                        example: "Việt Nam - Trung Quốc: Phát triển vững chắc, ổn định, lâu dài"
+                      post_content:
+                        type: string
+                        example: "Tổng Bí thư Nguyễn Phú Trọng tin tưởng chuyến thăm của Tổng Bí thư, Chủ tịch nước Trung Quốc Tập Cận Bình là một dấu mốc lịch sử mới, đưa quan hệ giữa hai Đảng, hai nước lên tầm cao mới..."
+                      post_thumb_url:
+                        type: string
+                        format: uri
+                        example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-13//1702425360-tong-bi-thu-nguyen-phu-trong-hoi-dam-voi-ong-tap-can-binh-tham-viet-nam-1-5546-3289-9946-width1200height799.jpg"
+                      post_likes_count:
+                        type: integer
+                        example: 0
+                      post_description:
+                        type: string
+                        example: "Sau hội đàm cấp cao, Tổng Bí thư hai nước đã cùng xem và nghe giới thiệu về 36 văn bản thỏa thuận hợp tác trên nhiều lĩnh vực..."
+                      post_coments_count:
+                        type: integer
+                        example: 0
+                      post_categories:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Categories"
+                      status:
+                        type: string
+                        example: "pending"
+                      post_series_ids:
+                        type: array
+                        items:
+                          type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2023-12-19T10:43:23.858Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2023-12-19T10:43:23.858Z"
+                      __v:
+                        type: integer
+                        example: 0
+        400:
+          description: Invalid input
+        default:
+          description: Unexpected error
+    get:
+      tags:
+        - posts
+      summary: get all posts
+      security:
+        - BearerAuth: []
+      description: This can only be done by the logged in user.
+      operationId: getAllPosts
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            default: 20
+          description: Limit the number of posts returned
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            default: 0
+          description: The number of posts to skip before starting to collect the result set
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "ctime"
+              - "atime"
+            default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
+        - in: query
+          name: keyword
+          required: false
+          schema:
+            type: string
+          description: The keyword to search for in the posts
+        - in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: The start date to filter the posts
+        - in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: The end date to filter the posts
+        - in: query
+          name: categoryId
+          required: false
+          schema:
+            type: string
+          description: The ID of the category to filter the posts by
+        - in: query
+          name: authorId
+          required: false
+          schema:
+            type: string
+          description: The ID of the author to filter the posts by
+      responses:
+        201:
+          description: successful create new series
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Create series succesfully!
+                  statusCode:
+                    type: integer
+                    example: 201
+                  metaData:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "658173cb38b8fe0892641d42"
+                            post_user_id:
+                              type: string
+                              example: "656a003aca3b51815e15a94a"
+                            post_title:
+                              type: string
+                              example: "Việt Nam - Trung Quốc: Phát triển vững chắc, ổn định, lâu dài"
+                            post_content:
+                              type: string
+                              example: "Tổng Bí thư Nguyễn Phú Trọng tin tưởng chuyến thăm của Tổng Bí thư, Chủ tịch nước Trung Quốc Tập Cận Bình là một dấu mốc lịch sử mới, đưa quan hệ giữa hai Đảng, hai nước lên tầm cao mới..."
+                            post_thumb_url:
+                              type: string
+                              format: uri
+                              example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-13//1702425360-tong-bi-thu-nguyen-phu-trong-hoi-dam-voi-ong-tap-can-binh-tham-viet-nam-1-5546-3289-9946-width1200height799.jpg"
+                            post_likes_count:
+                              type: integer
+                              example: 0
+                            post_description:
+                              type: string
+                              example: "Sau hội đàm cấp cao, Tổng Bí thư hai nước đã cùng xem và nghe giới thiệu về 36 văn bản thỏa thuận hợp tác trên nhiều lĩnh vực..."
+                            post_coments_count:
+                              type: integer
+                              example: 0
+                            post_categories:
+                              type: array
+                              items:
+                                $ref: "#/components/schemas/Categories"
+                            status:
+                              type: string
+                              example: "pending"
+                            post_series_ids:
+                              type: array
+                              items:
+                                type: string
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-19T10:43:23.858Z"
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-19T10:43:23.858Z"
+                            __v:
+                              type: integer
+                              example: 0
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "6581733738b8fe0892641d3d"
+                            post_user_id:
+                              type: string
+                              example: "656a003aca3b51815e15a94a"
+                            post_title:
+                              type: string
+                              example: "Lào Cai báo cáo vụ trường bị tố cho 11 học sinh ăn 2 gói mì tôm chan cơm"
+                            post_content:
+                              type: string
+                              example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho..."
+                            post_thumb_url:
+                              type: string
+                              format: uri
+                              example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-17/Lao-Cai-bao-cao-vu-truong-bi-to-cho-11-hoc-sinh-an-2-goi-mi-tom-chan-com-ava8-1702823535-203-width1920height1080.jpg"
+                            post_likes_count:
+                              type: integer
+                              example: 0
+                            post_description:
+                              type: string
+                              example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho học sinh tại Trường Phổ thông Dân tộc bán trú Tiểu học Hoàng Thu Phố 1, đóng trên địa bàn xã Hoàng Thu Phố."
+                            post_coments_count:
+                              type: integer
+                              example: 0
+                            post_categories:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  _id:
+                                    type: string
+                                    description: Category ID
+                                    example: "657537b29ae40316265de5b4"
+                                  category_name:
+                                    type: string
+                                    description: Category name
+                                    example: "Lập trình Kotlin"
+                                  category_description:
+                                    type: string
+                                    description: Category description
+                                    example: "Lập trình máy tính hay lập chương trình máy tính, thường gọi tắt là lập trình, là việc lập ra chương trình làm việc cho máy có bộ xử lý, nói riêng là máy tính, để thực thi nhiệm vụ xử lý thông tin nào đó. Chương trình này gồm dãy các chỉ thị hợp lý để máy thực hiện theo trình tự thời gian."
+                                  category_post_count:
+                                    type: integer
+                                    description: Category post count
+                                    example: 3
+                            post_series_ids:
+                              type: array
+                              items:
+                                type: string
+                              example: []
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-19T10:43:23.858Z"
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-19T10:43:23.858Z"
+  /posts/{id}:
+    get:
+      summary: Get a post by Id
+      operationId: getPostById
+      tags:
+        - posts
+      security:
+        - BearerAuth: []
+      description: "You can update the genral info of post such as name, description, URL, content"
+      parameters:
+        - name: id
+          in: path
+          description: "The post id that you want to update"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    description: Error status
+                    example: false
+                  message:
+                    type: string
+                    description: Response message
+                    example: "Get post succesfully!"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 200
+                  metaData:
+                    type: object
+                    description: Metadata about the operation
+                    properties:
+                      _id:
+                        type: string
+                        description: Post ID
+                        example: "658173cb38b8fe0892641d42"
+                      post_user_id:
+                        type: string
+                        description: User ID
+                        example: "656a003aca3b51815e15a94a"
+                      post_title:
+                        type: string
+                        description: Post title
+                        example: "Lào Cai báo cáo vụ trường bị tố cho 11 học sinh ăn 2 gói mì tôm chan cơm"
+                      post_content:
+                        type: string
+                        description: Post content
+                        example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho học sinh tại Trường Phổ thông Dân tộc bán trú Tiểu học Hoàng Thu Phố 1, đóng trên địa bàn xã Hoàng Thu Phố."
+                      post_thumb_url:
+                        type: string
+                        description: Post thumbnail URL
+                        example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-17/Lao-Cai-bao-cao-vu-truong-bi-to-cho-11-hoc-sinh-an-2-goi-mi-tom-chan-com-ava8-1702823535-203-width1920height1080.jpg"
+                      post_likes_count:
+                        type: integer
+                        description: Post likes count
+                        example: 0
+                      post_description:
+                        type: string
+                        description: Post description
+                        example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho học sinh tại Trường Phổ thông Dân tộc bán trú Tiểu học Hoàng Thu Phố 1, đóng trên địa bàn xã Hoàng Thu Phố."
+                      post_coments_count:
+                        type: integer
+                        description: Post comments count
+                        example: 0
+                      post_categories:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: Category ID
+                              example: "657537b29ae40316265de5b4"
+                            category_name:
+                              type: string
+                              description: Category name
+                              example: "Lập trình Kotlin"
+                            category_description:
+                              type: string
+                              description: Category description
+                              example: "Lập trình máy tính hay lập chương trình máy tính, thường gọi tắt là lập trình, là việc lập ra chương trình làm việc cho máy có bộ xử lý, nói riêng là máy tính, để thực thi nhiệm vụ xử lý thông tin nào đó. Chương trình này gồm dãy các chỉ thị hợp lý để máy thực hiện theo trình tự thời gian."
+                            category_post_count:
+                              type: integer
+                              description: Category post count
+                              example: 3
+                      post_series_ids:
+                        type: array
+                        items:
+                          type: string
+                        description: Post series IDs
+                        example: []
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Creation date
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        description: Creation date
+        "400":
+          description: The post is not foundd
+        "401":
+          description: Auth error. You not autherized for accessing to an post that has pending or blocked status
+    patch:
+      summary: Update a general information of post by Id
+      operationId: updateGeneralInfomationOfPost
+      tags:
+        - posts
+      security:
+        - BearerAuth: []
+      description: "You can update the general info of post such as name, description, URL, content"
+      parameters:
+        - name: id
+          in: path
+          description: "The post id that you want to update"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+      requestBody:
+        description: "**General information** includes:<br>
+          - post_title<br>
+          - post_content<br>
+          - post_thumb_url<br>
+          - post_description<br><br>***All field*** are `optional`"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_title:
+                  type: string
+                  description: The title of the post
+                  example: "Lào Cai báo cáo vụ trường bị tố cho 11 học sinh ăn 2 gói mì tôm chan cơm"
+                post_content:
+                  type: string
+                  description: The content of the post
+                  example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho học sinh tại Trường Phổ thông Dân tộc bán trú Tiểu học Hoàng Thu Phố 1, đóng trên địa bàn xã Hoàng Thu Phố.Theo UBND huyện Bắc Hà, sáng cùng ngày, ông Đinh Văn Đăng - Chủ tịch UBND huyện Bắc Hà đã chủ trì tổ chức họp với các cơ quan liên quan, UBND xã Hoàng Thu Phố, Ban Giám hiệu trường Phổ thông Dân tộc bán trú Tiểu học Hoàng Thu Phố 1 để xác minh theo nội dung phản ánh."
+                post_thumb_url:
+                  type: string
+                  description: The thumbnail URL of the post
+                  example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-17/Lao-Cai-bao-cao-vu-truong-bi-to-cho-11-hoc-sinh-an-2-goi-mi-tom-chan-com-ava8-1702823535-203-width1920height1080.jpg"
+                post_description:
+                  type: string
+                  description: The description of the post
+                  example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho học sinh tại Trường Phổ thông Dân tộc bán trú Tiểu học Hoàng Thu Phố 1, đóng trên địa bàn xã Hoàng Thu Phố."
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Create series succesfully!
+                  statusCode:
+                    type: integer
+                    example: 201
+                  metaData:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "658173cb38b8fe0892641d42"
+                      post_user_id:
+                        type: string
+                        example: "656a003aca3b51815e15a94a"
+                      post_title:
+                        type: string
+                        example: "Lào Cai báo cáo vụ trường bị tố cho 11 học sinh ăn 2 gói mì tôm chan cơm"
+                      post_content:
+                        type: string
+                        example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho học sinh tại Trường..."
+                      post_thumb_url:
+                        type: string
+                        format: uri
+                        example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-17/Lao-Cai-bao-cao-vu-truong-bi-to-cho-11-hoc-sinh-an-2-goi-mi-tom-chan-com-ava8-1702823535-203-width1920height1080.jpg"
+                      post_likes_count:
+                        type: integer
+                        example: 0
+                      post_description:
+                        type: string
+                        example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho học sinh tại Trường Phổ thông Dân tộc bán trú Tiểu học Hoàng Thu Phố 1, đóng trên địa bàn xã Hoàng Thu Phố."
+                      post_coments_count:
+                        type: integer
+                        example: 0
+                      post_categories:
+                        type: array
+                        items:
+                          oneOf:
+                            - type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  description: Category ID
+                                  example: "657537b29ae40316265de5b4"
+                                category_name:
+                                  type: string
+                                  description: Category name
+                                  example: "Lập trình Kotlin"
+                                category_description:
+                                  type: string
+                                  description: Category description
+                                  example: "Lập trình máy tính hay lập chương trình máy tính, thường gọi tắt là lập trình, là việc lập ra chương trình làm việc cho máy có bộ xử lý, nói riêng là máy tính, để thực thi nhiệm vụ xử lý thông tin nào đó. Chương trình này gồm dãy các chỉ thị hợp lý để máy thực hiện theo trình tự thời gian."
+                                category_post_count:
+                                  type: integer
+                                  description: Category post count
+                                  example: 3
+                      status:
+                        type: string
+                        example: "pending"
+                      post_series_ids:
+                        type: array
+                        items:
+                          type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2023-12-19T10:43:23.858Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2023-12-19T10:43:23.858Z"
+                      __v:
+                        type: integer
+                        example: 0
+        400:
+          description: Params invalid.
+        404:
+          description: Category's not found
+        401:
+          description: "User is not autherized (only for Admin)"
+  /posts/{id}/status:
+    patch:
+      tags:
+        - posts
+      summary: Aprove or reject a post
+      security:
+        - BearerAuth: []
+      description: Aprove or reject a post. This ***features*** is only for `[ADMIN]`.<br>Have three status :<br> - `pending` meaning the post is waiting admin approve<br> - `active` meaning the post is have approve and it's public for people<br> - `blocked` meaning post's content isn't valid for community
+      operationId: changeStatusOfPost
+      parameters:
+        - name: id
+          in: path
+          description: ID of post to change status
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: You have to fill one of three status that are available in the system.
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                newStatus:
+                  type: string
+                  enum:
+                    - active
+                    - pending
+                    - blocked
+                  example: active
+                  description: This is one of three status that are available in the system
+              required:
+                - newStatus
+      responses:
+        201:
+          description: Add posts into series successfully!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    description: Error status
+                    example: false
+                  message:
+                    type: string
+                    description: Response message
+                    example: "Get post succesfully!"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code
+                    example: 200
+                  metaData:
+                    type: object
+                    description: Metadata about the operation
+                    properties:
+                      _id:
+                        type: string
+                        description: Post ID
+                        example: "658173cb38b8fe0892641d42"
+                      post_user_id:
+                        type: string
+                        description: User ID
+                        example: "656a003aca3b51815e15a94a"
+                      post_title:
+                        type: string
+                        description: Post title
+                        example: "Lào Cai báo cáo vụ trường bị tố cho 11 học sinh ăn 2 gói mì tôm chan cơm"
+                      post_content:
+                        type: string
+                        description: Post content
+                        example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho học sinh tại Trường Phổ thông Dân tộc bán trú Tiểu học Hoàng Thu Phố 1, đóng trên địa bàn xã Hoàng Thu Phố."
+                      post_thumb_url:
+                        type: string
+                        description: Post thumbnail URL
+                        example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-17/Lao-Cai-bao-cao-vu-truong-bi-to-cho-11-hoc-sinh-an-2-goi-mi-tom-chan-com-ava8-1702823535-203-width1920height1080.jpg"
+                      post_likes_count:
+                        type: integer
+                        description: Post likes count
+                        example: 0
+                      post_description:
+                        type: string
+                        description: Post description
+                        example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho học sinh tại Trường Phổ thông Dân tộc bán trú Tiểu học Hoàng Thu Phố 1, đóng trên địa bàn xã Hoàng Thu Phố."
+                      post_coments_count:
+                        type: integer
+                        description: Post comments count
+                        example: 0
+                      post_categories:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: Category ID
+                              example: "657537b29ae40316265de5b4"
+                            category_name:
+                              type: string
+                              description: Category name
+                              example: "Lập trình Kotlin"
+                            category_description:
+                              type: string
+                              description: Category description
+                              example: "Lập trình máy tính hay lập chương trình máy tính, thường gọi tắt là lập trình, là việc lập ra chương trình làm việc cho máy có bộ xử lý, nói riêng là máy tính, để thực thi nhiệm vụ xử lý thông tin nào đó. Chương trình này gồm dãy các chỉ thị hợp lý để máy thực hiện theo trình tự thời gian."
+                            category_post_count:
+                              type: integer
+                              description: Category post count
+                              example: 3
+                      post_series_ids:
+                        type: array
+                        items:
+                          type: string
+                        description: Post series IDs
+                        example: []
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Creation date
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        description: Creation date
+                      __v:
+                        type: integer
+                        example: 0
+        "401":
+          description: Autherized Error. This error occurs when you aren't not `Admin`
+  /posts/{id}/comments:
+    get:
+      tags:
+        - posts
+      summary: Get all comments of posts
+      security:
+        - BearerAuth: []
+      operationId: getAllCommentsOfPosts
+      parameters:
+        - name: id
+          in: path
+          description: "The post id that you want to get comments"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "ctime"
+              - "atime"
+            default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
+        - name: limit
+          in: query
+          description: "Limit the number of results"
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          description: "Offset for pagination"
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: startDate
+          in: query
+          description: "Start date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: endDate
+          in: query
+          description: "End date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: status
+          in: query
+          description: The state of comments.<br> `True` is active and `False` is blocked by author of post
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Successful get list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "unFollow successfully!"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 200
+                    description: The HTTP status code.
+                  metaData:
+                    type: array
+                    description: Additional metadata (optional).
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "657d6fbcd4c14aa28e1fdfca"
+                            cmt_post_id:
+                              type: string
+                              example: "657947a2573b60f6f8be8816"
+                            cmt_user_id:
+                              type: string
+                              example: "656a003aca3b51815e15a94a"
+                            cmt_content:
+                              type: string
+                              example: "Việt Nam mãi đỉnh 🐲"
+                            cmt_likes_count:
+                              type: integer
+                              example: 0
+                            cmt_likes:
+                              type: array
+                              items:
+                                type: string
+                                format: MongoId
+                              example: []
+                            status:
+                              type: boolean
+                              example: true
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-16T09:37:00.182Z"
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-16T09:37:00.182Z"
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "657d6fbcd4c14aa28256dgha"
+                            cmt_post_id:
+                              type: string
+                              example: "657947a2573b60f6f8be8816"
+                            cmt_user_id:
+                              type: string
+                              example: "656a003aca3b51815e15a94a"
+                            cmt_content:
+                              type: string
+                              example: "Việt Nam giờ sắp thành nước phát triển rồi á✈️"
+                            cmt_likes_count:
+                              type: integer
+                              example: 0
+                            cmt_likes:
+                              type: array
+                              items:
+                                type: string
+                                format: MongoId
+                              example: []
+                            status:
+                              type: boolean
+                              example: true
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-16T09:37:00.182Z"
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-16T09:37:00.182Z"
+  /posts/{id}/likes:
+    get:
+      tags:
+        - posts
+      summary: Get all likes of posts
+      security:
+        - BearerAuth: []
+      operationId: getAllLikesOfPosts
+      parameters:
+        - name: id
+          in: path
+          description: "The post id that you want to get likes"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "ctime"
+              - "atime"
+            default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
+        - name: limit
+          in: query
+          description: "Limit the number of results"
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          description: "Offset for pagination"
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: startDate
+          in: query
+          description: "Start date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: endDate
+          in: query
+          description: "End date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+      responses:
+        "200":
+          description: Successful get list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "unFollow successfully!"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 200
+                    description: The HTTP status code.
+                  metaData:
+                    type: array
+                    description: Additional metadata (optional).
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "657d6fbcd4c14aa28e1fdfca"
+                            cmt_post_id:
+                              type: string
+                              example: "657947a2573b60f6f8be8816"
+                            cmt_user_id:
+                              type: string
+                              example: "656a003aca3b51815e15a94a"
+                            cmt_content:
+                              type: string
+                              example: "Việt Nam mãi đỉnh 🐲"
+                            cmt_likes_count:
+                              type: integer
+                              example: 0
+                            cmt_likes:
+                              type: array
+                              items:
+                                type: string
+                            status:
+                              type: boolean
+                              example: true
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-16T09:37:00.182Z"
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-16T09:37:00.182Z"
+
+  /otps:
+    post:
+      tags:
+        - otps
+      summary: Create new OTP code
+      description: OTP code will be sent to your email address which is declared in the body. This code is available in 60
+      operationId: createNewOTPCode
+      requestBody:
+        description: Your email address for OTP
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                email:
+                  type: "string"
+                  format: "email"
+                  example: "user123@gmail.com"
+        required: true
+      responses:
+        "200":
+          description: "OTP created successfully"
+        "400":
+          description: "Bad request. User input is invalid"
+        "429":
+          description: "Too many requests.Please try again while later"
+  /users/wishList:
+    post:
+      tags:
+        - users
+      summary: Add posts into Wish List (Favorite posts of user)
+      security:
+        - BearerAuth: []
+      description: This can only be done by the logged in user.
+      operationId: addPostIntoWistList
+      requestBody:
+        description: ObjectId of posts that you want push into wish list
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                postId:
+                  type: "string"
+                  format: MongoId
+                  example: "656574e9dd0dd70b52ac9eca"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: boolean
+                    description: Whether an error occurred during login
+                    default: false
+                  message:
+                    type: string
+                    description: Login success message
+                    default: "Login succesfully"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code of the response
+                    default: 200
+                  metaData:
+                    type: object
+                    description: Additional login metadata
+                    properties:
+                      _id:
+                        type: string
+                        description: Id of user
+                        format: MongoId
+                        example: "656a003aca3b51815e15a94a"
+                      user_nickname:
+                        type: string
+                        description: Name of user
+                        example: "Nguyễn Anh Tuấn Ngọc"
+                      user_email:
+                        type: string
+                        description: Email of user
+                        format: email
+                        example: "21522379@gm.uit.edu.vn"
+                      user_favorite_posts:
+                        type: array
+                        items:
+                          oneOf:
+                            - type: string
+                              format: MongoId
+                              default: 656b350e9c11de28454afb9c
+                            - type: string
+                              format: MongoId
+                              default: 656574e9dd0dd70b52ac9eca
+                            - type: string
+                              format: MongoId
+                              default: 65753dafda906132b3d165b2
+                            - type: string
+                              format: MongoId
+                              default: 657947a2573b60f6f8be8816
+        400:
+          description: Invalid input
+    delete:
+      tags:
+        - users
+      summary: Remove posts from Wish List (Favorite posts of user)
+      security:
+        - BearerAuth: []
+      description: This can only be done by the logged in user.
+      operationId: removePostFromWistList
+      requestBody:
+        description: ObjectId of posts that you want remove from wish list
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                postId:
+                  type: array
+                  description: postIds you want to remove
+                  items:
+                    oneOf:
+                      - type: string
+                        format: MongoId
+                        example: 65753dafda906132b3d165b2
+                      - type: string
+                        format: MongoId
+                        example: 657947a2573b60f6f8be8816
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: boolean
+                    description: Whether an error occurred during login
+                    default: false
+                  message:
+                    type: string
+                    description: Login success message
+                    default: "Login succesfully"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code of the response
+                    default: 200
+                  metaData:
+                    type: object
+                    description: Additional login metadata
+                    properties:
+                      _id:
+                        type: string
+                        description: Id of user
+                        format: MongoId
+                        example: "656a003aca3b51815e15a94a"
+                      user_nickname:
+                        type: string
+                        description: Name of user
+                        example: "Nguyễn Anh Tuấn Ngọc"
+                      user_email:
+                        type: string
+                        description: Email of user
+                        format: email
+                        example: "21522379@gm.uit.edu.vn"
+                      user_favorite_posts:
+                        type: array
+                        items:
+                          oneOf:
+                            - type: string
+                              format: MongoId
+                              default: 656b350e9c11de28454afb9c
+                            - type: string
+                              format: MongoId
+                              default: 656574e9dd0dd70b52ac9eca
+        400:
+          description: Invalid inputs
+  /users/password:
+    patch:
+      tags:
+        - users
+      summary: Reset password
+      security:
+        - BearerAuth: []
+      description: Reset password of user
+      operationId: resetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: "string"
+                  example: "123456789"
+                newPassword:
+                  type: "string"
+                  example: "ABCxyz123"
+              required:
+                - oldPassword
+                - newPassword
+      responses:
+        "200":
+          description: Successful reset password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Follow successfully"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 201
+                    description: The HTTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata (optional).
+        "400":
+          description: Invalid inputs
+  /users:
+    patch:
+      tags:
+        - users
+      summary: Update general profile of user
+      description: Update profile of user
+      operationId: updateProfile
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: "All fields in body request are **_optional_**. You can choose the field you would like for updating"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_nickname:
+                  type: "string"
+                  example: "Trinh xinh đẹp"
+                user_profilePhotoURL:
+                  type: "string"
+                  example: "ABCxyz123"
+                user_website:
+                  type: "string"
+                  example: "ABCxyz123"
+                user_bio:
+                  type: "string"
+                  example: "ABCxyz123"
+                user_gender:
+                  type: "string"
+                  example: "male"
+                  enum:
+                    - "male"
+                    - "female"
+                    - "unKnown"
+      responses:
+        "200":
+          description: Successful reset password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Follow successfully"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 201
+                    description: The HTTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata (optional).
+        "400":
+          description: Invalid inputs (When no find any field for update or some filed aren't accepted for updating)
+  /users/{id}/posts:
+    get:
+      tags:
+        - users
+      summary: Get all list of posts of this user
+      security:
+        - BearerAuth: []
+      description: "This features use for `[ALL USER]` or `[USER]`<br>
+        Case:<br>
+        - `[ALL USER]`: Only see the follower of user that are ***active***<br>
+        - `[USER]`: Only see the follower of user that are either ***blocked*** or ***active***"
+      operationId: getAllPosts
+      parameters:
+        - name: id
+          in: path
+          description: "The user id that you want to find"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            default: 20
+          description: Limit the number of posts returned
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            default: 0
+          description: The number of posts to skip before starting to collect the result set
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "ctime"
+              - "atime"
+            default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
+        - in: query
+          name: keyword
+          required: false
+          schema:
+            type: string
+          description: The keyword to search for in the posts
+        - in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: The start date to filter the posts
+        - in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: The end date to filter the posts
+        - in: query
+          name: categoryId
+          required: false
+          schema:
+            type: string
+          description: The ID of the category to filter the posts by
+        - name: status
+          in: query
+          description: The state of post
+          required: false
+          schema:
+            type: string
+            enum:
+              - active
+              - pending
+              - blocked
+      responses:
+        "200":
+          description: Get list of user's posts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Create series succesfully!
+                  statusCode:
+                    type: integer
+                    example: 200
+                  metaData:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "658173cb38b8fe0892641d42"
+                            post_user_id:
+                              type: string
+                              example: "656a003aca3b51815e15a94a"
+                            post_title:
+                              type: string
+                              example: "Việt Nam - Trung Quốc: Phát triển vững chắc, ổn định, lâu dài"
+                            post_content:
+                              type: string
+                              example: "Tổng Bí thư Nguyễn Phú Trọng tin tưởng chuyến thăm của Tổng Bí thư, Chủ tịch nước Trung Quốc Tập Cận Bình là một dấu mốc lịch sử mới, đưa quan hệ giữa hai Đảng, hai nước lên tầm cao mới..."
+                            post_thumb_url:
+                              type: string
+                              format: uri
+                              example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-13//1702425360-tong-bi-thu-nguyen-phu-trong-hoi-dam-voi-ong-tap-can-binh-tham-viet-nam-1-5546-3289-9946-width1200height799.jpg"
+                            post_likes_count:
+                              type: integer
+                              example: 0
+                            post_description:
+                              type: string
+                              example: "Sau hội đàm cấp cao, Tổng Bí thư hai nước đã cùng xem và nghe giới thiệu về 36 văn bản thỏa thuận hợp tác trên nhiều lĩnh vực..."
+                            post_coments_count:
+                              type: integer
+                              example: 0
+                            post_categories:
+                              type: array
+                            status:
+                              type: string
+                              example: "pending"
+                            post_series_ids:
+                              type: array
+                              items:
+                                type: string
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-19T10:43:23.858Z"
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-19T10:43:23.858Z"
+                            __v:
+                              type: integer
+                              example: 0
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "6581733738b8fe0892641d3d"
+                            post_user_id:
+                              type: string
+                              example: "656a003aca3b51815e15a94a"
+                            post_title:
+                              type: string
+                              example: "Lào Cai báo cáo vụ trường bị tố cho 11 học sinh ăn 2 gói mì tôm chan cơm"
+                            post_content:
+                              type: string
+                              example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho..."
+                            post_thumb_url:
+                              type: string
+                              format: uri
+                              example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-17/Lao-Cai-bao-cao-vu-truong-bi-to-cho-11-hoc-sinh-an-2-goi-mi-tom-chan-com-ava8-1702823535-203-width1920height1080.jpg"
+                            post_likes_count:
+                              type: integer
+                              example: 0
+                            post_description:
+                              type: string
+                              example: "Tối 17/12, UBND huyện Bắc Hà (Lào Cai) đã có báo cáo nội dung liên quan đến phản ánh của Đài Truyền hình Việt Nam về bữa ăn cho học sinh tại Trường Phổ thông Dân tộc bán trú Tiểu học Hoàng Thu Phố 1, đóng trên địa bàn xã Hoàng Thu Phố."
+                            post_coments_count:
+                              type: integer
+                              example: 0
+                            post_categories:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  _id:
+                                    type: string
+                                    description: Category ID
+                                    example: "657537b29ae40316265de5b4"
+                                  category_name:
+                                    type: string
+                                    description: Category name
+                                    example: "Lập trình Kotlin"
+                                  category_description:
+                                    type: string
+                                    description: Category description
+                                    example: "Lập trình máy tính hay lập chương trình máy tính, thường gọi tắt là lập trình, là việc lập ra chương trình làm việc cho máy có bộ xử lý, nói riêng là máy tính, để thực thi nhiệm vụ xử lý thông tin nào đó. Chương trình này gồm dãy các chỉ thị hợp lý để máy thực hiện theo trình tự thời gian."
+                                  category_post_count:
+                                    type: integer
+                                    description: Category post count
+                                    example: 3
+                            post_series_ids:
+                              type: array
+                              items:
+                                type: string
+                              example: []
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-19T10:43:23.858Z"
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-19T10:43:23.858Z"
+        "400":
+          description: Invalid input
+        default:
+          description: Check again query params
+
+  /users/{id}/followers:
+    get:
+      tags:
+        - users
+      summary: Get all list of follower of this user
+      security:
+        - BearerAuth: []
+      description: "This features use for `[ALL USER]` or `[USER]`<br>
+        Case:<br>
+        - `[ALL USER]`: Only see the follower of user that are ***active***<br>
+        - `[USER]`: Only see the follower of user that are either ***blocked*** or ***active***"
+      operationId: getAllFollowers
+      parameters:
+        - name: id
+          in: path
+          description: "The userId that you want to get list of follower"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "ctime"
+              - "atime"
+            default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
+        - name: limit
+          in: query
+          description: "Limit the number of results"
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          description: "Offset for pagination"
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: startDate
+          in: query
+          description: "Start date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: endDate
+          in: query
+          description: "End date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: status
+          in: query
+          description: "**True** for active and **False** for blocked"
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Successful get list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Follow successfully"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 201
+                    description: The HTTP status code.
+                  metaData:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "657583bc2a468f68e40540de"
+                            follower_user_id:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  example: "656aef9f202cfe899dc93c59"
+                                user_nickname:
+                                  type: string
+                                  example: "Tuấn Anh"
+                            status:
+                              type: boolean
+                              example: false
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-10T09:24:12.867Z"
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "655f5babe180cb0e0e624a6e"
+                            follower_user_id:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  example: "655f35d72e1e26e826d8ef4f"
+                                user_nickname:
+                                  type: string
+                                  example: "AnhThu"
+                            status:
+                              type: boolean
+                              example: true
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-11-23T14:03:23.389Z"
+        "400":
+          description: Invalid input
+        default:
+          description: Check again query params
+  /users/{id}/followings:
+    get:
+      tags:
+        - users
+      summary: Get all list of followings of this user
+      security:
+        - BearerAuth: []
+      description: "This features use for `[ALL USER]` or `[USER]`<br>
+        Case:<br>
+        - `[ALL USER]`: Only see the follower of user that are ***active***<br>
+        - `[USER]`: Only see the follower of user that are either ***blocked*** or ***active***"
+      operationId: getAllFollowings
+      parameters:
+        - name: id
+          in: path
+          description: "The userId that you want to get list of followings"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "ctime"
+              - "atime"
+            default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
+        - name: limit
+          in: query
+          description: "Limit the number of results"
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          description: "Offset for pagination"
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: startDate
+          in: query
+          description: "Start date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: endDate
+          in: query
+          description: "End date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: status
+          in: query
+          description: "**True** for active and **False** for blocked"
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Successful get list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Follow successfully"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 201
+                    description: The HTTP status code.
+                  metaData:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "657583bc2a468f68e40540de"
+                            follower_user_id:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  example: "656aef9f202cfe899dc93c59"
+                                user_nickname:
+                                  type: string
+                                  example: "Tuấn Anh"
+                            status:
+                              type: boolean
+                              example: false
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-10T09:24:12.867Z"
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "655f5babe180cb0e0e624a6e"
+                            follower_user_id:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  example: "655f35d72e1e26e826d8ef4f"
+                                user_nickname:
+                                  type: string
+                                  example: "AnhThu"
+                            status:
+                              type: boolean
+                              example: true
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-11-23T14:03:23.389Z"
+        "400":
+          description: Invalid input
+        default:
+          description: Check again query params
+  /users/likes:
+    get:
+      tags:
+        - users
+      summary: Get all list of likes of this user
+      security:
+        - BearerAuth: []
+      operationId: getAllLikesOfUser
+      parameters:
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "ctime"
+              - "atime"
+            default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
+        - name: limit
+          in: query
+          description: "Limit the number of results"
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          description: "Offset for pagination"
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: startDate
+          in: query
+          description: "Start date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: endDate
+          in: query
+          description: "End date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+      responses:
+        "200":
+          description: Successful get list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Follow successfully"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 201
+                    description: The HTTP status code.
+                  metaData:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              format: MongoIds
+                              example: "65795308f16de45ce133f446"
+                            like_user_id:
+                              type: string
+                              format: MongoId
+                              example: "656aef9f202cfe899dc93c59"
+                            like_post_id:
+                              type: string
+                              format: MongoId
+                              example: "65753dafda906132b3d165b2"
+                            createdAt:
+                              type: string
+                              format: ISO8601
+                              example: "2023-12-13T06:45:28.014Z"
+                            updatedAt:
+                              type: string
+                              format: ISO8601
+                              example: "2023-12-13T06:45:28.014Z"
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              format: MongoId
+                              example: "6572d7bc42035b41ac4a201e"
+                            like_user_id:
+                              type: string
+                              format: MongoId
+                              example: "656aef9f202cfe899dc93c59"
+                            like_post_id:
+                              type: string
+                              example: "657947a2573b60f6f8be8816"
+                            createdAt:
+                              type: string
+                              format: ISO8601
+                              example: "2023-12-13T06:45:28.014Z"
+                            updatedAt:
+                              type: string
+                              format: ISO8601
+                              example: "2023-12-13T06:45:28.014Z"
+        "400":
+          description: Invalid input
+        default:
+          description: Check again query params
+  /users/comments:
+    get:
+      tags:
+        - users
+      summary: Get all list of comments of this user
+      security:
+        - BearerAuth: []
+      operationId: getAllCommentsOfUser
+      parameters:
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "ctime"
+              - "atime"
+            default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
+        - name: limit
+          in: query
+          description: "Limit the number of results"
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          description: "Offset for pagination"
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: startDate
+          in: query
+          description: "Start date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: endDate
+          in: query
+          description: "End date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+      responses:
+        "200":
+          description: Successful get list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Get likes histories successfully"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 200
+                    description: The HTTP status code.
+                  metaData:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "65795308f16de45ce133f446"
+                            like_user_id:
+                              type: string
+                              example: "656aef9f202cfe899dc93c59"
+                            like_post_id:
+                              type: string
+                              example: "65753dafda906132b3d165b2"
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-13T06:45:28.014Z"
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-13T06:45:28.014Z"
+        "400":
+          description: Invalid input
+        default:
+          description: Check again query params
+  /access/login:
+    post:
+      tags:
+        - access
+      summary: Logs user into the system
+      description: ""
+      operationId: loginUser
+      requestBody:
+        description: Email and password for login section
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: "string"
+                  format: "email"
+                  example: "user123@gmail.com"
+                password:
+                  type: "string"
+                  example: "123@abcxyz"
+      responses:
+        "200":
+          description: Successfully login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    description: Whether an error occurred during login
+                    default: false
+                  message:
+                    type: string
+                    description: Login success message
+                    default: "Login succesfully"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code of the response
+                    default: 200
+                  metaData:
+                    type: object
+                    description: Additional login metadata
+                    properties:
+                      accessToken:
+                        type: string
+                        description: Access token for the logged in user
+                        example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
+                      refreshToken:
+                        type: string
+                        description: Refresh token for the logged in user
+                        example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
+        "400":
+          description: Invalid username/password or Informations in body request isn't adequate
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    description: Whether an error occurred
+                    default: true
+                  code:
+                    type: integer
+                    description: HTTP status code of the error
+                    default: 400
+                  message:
+                    type: string
+                    description: Error message
+                    default: "Invalid email or password"
+  /access/signUp:
+    post:
+      tags:
+        - access
+      summary: Logs user into the system
+      description: ""
+      operationId: signUpUser
+      requestBody:
+        description: Input user's information include all required filed below
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_nickname:
+                  type: string
+                  example: "Tuấn Anh"
+                user_email:
+                  type: string
+                  format: email
+                  example: "21522379@gm.uit.edu.vn"
+                user_password:
+                  type: string
+                  example: "ngoc20032"
+                user_profilePhotoURL:
+                  type: string
+                  format: uri
+                  example: "https://viso.ai/wp-content/uploads/2021/01/data-science-artificial-intelligence-machine-learning-vs-deep-learning.png"
+                user_website:
+                  type: string
+                  format: uri
+                  example: "https://www.facebook.com/profile.php?id=100024562028779"
+                user_bio:
+                  type: string
+                  example: "Đơn giản là ngọc thôi"
+                user_gender:
+                  type: string
+                  enum:
+                    - male
+                    - female
+                    - unknown
+                  example: "male"
+                otp:
+                  type: string
+                  example: "316570"
+              required:
+                - otp
+                - user_gender
+                - user_password
+                - user_email
+                - user_nickname
+      responses:
+        "200":
+          description: Successfully login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    description: Whether an error occurred during login
+                    default: false
+                  message:
+                    type: string
+                    description: Login success message
+                    default: "Login succesfully"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code of the response
+                    default: 200
+                  metaData:
+                    type: object
+                    description: Additional login metadata
+                    properties:
+                      accessToken:
+                        type: string
+                        description: Access token for the logged in user
+                        example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
+                      refreshToken:
+                        type: string
+                        description: Refresh token for the logged in user
+                        example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
+        "400":
+          description: Invalid username/password or Informations in body request isn't adequate
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    description: Whether an error occurred
+                    default: true
+                  code:
+                    type: integer
+                    description: HTTP status code of the error
+                    default: 400
+                  message:
+                    type: string
+                    description: Error message
+                    default: "Invalid email or password"
+  /follows:
+    post:
+      summary: Follow a user
+      tags:
+        - follows
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: The userId that you want to follow
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                followingUserId:
+                  type: string
+                  format: MongoId
+                  description: The ID of the user to follow.
+                  example: "656a003aca3b51815e15a94a"
+              required:
+                - followingUserId
+      responses:
+        201:
+          description: Follow successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Follow successfully"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 201
+                    description: The HTTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata (optional).
+        400:
+          description: Input invalid.
+        404:
+          description: Follow's not found
+  /follows/{id}:
+    delete:
+      summary: Unfollow a user
+      tags:
+        - follows
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: "The follow id that you want to remove"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+      responses:
+        200:
+          description: Unfollow successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "unFollow successfully!"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 200
+                    description: The HTTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata (optional).
+        400:
+          description: Params invalid.
+        404:
+          description: Follow's not found
+  /follows/{id}/status:
+    post:
+      summary: Change the status of a follow relationship
+      tags:
+        - follows
+      security:
+        - BearerAuth: []
+      description: "Status is true or false. If you chosse **false**, the follower will be **blocked**. Otherwise, **true** is **active**"
+      parameters:
+        - name: id
+          in: path
+          description: "The followId that you want to change status"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newStatus:
+                  type: boolean
+                  description: The new status of the follow relationship (true - active and false - block).
+              required:
+                - newStatus
+      responses:
+        201:
+          description: Status update successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    enum:
+                      - true
+                      - false
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Change status succesfully!"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 200
+                    description: The HTTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata about the update operation.
+                    properties:
+                      acknowledged:
+                        type: boolean
+                        example: true
+                        description: Indicates whether the update was acknowledged by the database.
+                      modifiedCount:
+                        type: integer
+                        example: 1
+                        description: The number of documents modified by the update.
+                      upsertedId:
+                        type: string
+                        example: null
+                        description: The ID of the document upserted (inserted or updated) if any.
+                      upsertedCount:
+                        type: integer
+                        example: 0
+                        description: The number of documents upserted.
+                      matchedCount:
+                        type: integer
+                        example: 1
+                        description: The number of documents matched by the update query.
+        400:
+          description: Params invalid.
+        404:
+          description: Follow's not found
+  /categories:
+    post:
+      tags:
+        - categories
+      summary: Create new category
+      description: "This feature is only for `[ADMIN]`"
+      operationId: createNewCategory
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        description: Information about category
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                category_name:
+                  type: "string"
+                  example: "Chính trị"
+                  description: The name of the category
+                category_description:
+                  type: "string"
+                  example: "Chính trị (Tiếng Anh: politics) là hoạt động trong lĩnh vực quan hệ giữa các giai cấp, cũng như các dân tộc và các quốc gia với vấn đề giành, giữ, tổ chức và sử dụng quyền lực Nhà nước; là sự tham gia của nhân dân vào công việc của Nhà nước và xã hội, là hoạt động chính trị thực tiễn của giai cấp, các đảng phái chính trị, các nhà nước nhằm tìm kiếm những khả năng thực hiện đường lối và những mục tiêu đã đề ra nhằm thỏa mãn lợi ích."
+                  description: The content contains general information about the category
+              required:
+                - category_name
+                - category_description
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    description: Whether an error occurred during login
+                    default: false
+                  message:
+                    type: string
+                    description: Login success message
+                    default: "Login succesfully"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code of the response
+                    default: 201
+                  metaData:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        format: MongoId
+                        default: 657d36ac5548403d1a0d22c3
+                      category_name:
+                        type: string
+                        example: "Chính trị"
+                      category_description:
+                        type: string
+                        example: "Chính trị (Tiếng Anh: politics) là hoạt động...."
+                      category_post_count:
+                        type: integer
+                      createdAt:
+                        format: ISO8601
+                        type: string
+                        example: "2023-12-16T05:33:32.094Z"
+                      updatedAt:
+                        format: ISO8601
+                        type: string
+                        example: "2023-12-16T05:33:32.094Z"
+                      __v:
+                        type: integer
+                        example: 0
+        400:
+          description: "Bad request. Input is not valid (name is existed, null input, input unvalid)"
+        401:
+          description: "Dont have permission"
+    get:
+      tags:
+        - categories
+      summary: Get all categories
+      description: All categories in current time.
+      operationId: getAllCategories
+      security:
+        - BearerAuth: []
+      responses:
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    description: Whether an error occurred during login
+                    default: false
+                  message:
+                    type: string
+                    description: Login success message
+                    default: "Login succesfully"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code of the response
+                    default: 201
+                  metaData:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              format: MongoId
+                              default: 657d36ac5548403d1a0d22c3
+                            category_name:
+                              type: string
+                              example: "Chính trị"
+                            category_description:
+                              type: string
+                              example: "Chính trị (Tiếng Anh: politics) là hoạt động...."
+                            category_post_count:
+                              type: integer
+                              example: 100
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              format: MongoId
+                              default: 657537b29ae40316265de5b4
+                            category_name:
+                              type: string
+                              example: "Lập trình"
+                            category_description:
+                              type: string
+                              example: "Lập trình máy tính hay lập chương trình máy tính...."
+                            category_post_count:
+                              type: integer
+                              example: 67
+        401:
+          description: "Unvalid Token"
+  /categories/{id}:
+    delete:
+      summary: Delete a category by Id
+      operationId: deleteCategory
+      tags:
+        - categories
+      security:
+        - BearerAuth: []
+      description: "This feature is only for `[ADMIN]`"
+      parameters:
+        - name: id
+          in: path
+          description: "The category id that you want to remove"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+      responses:
+        200:
+          description: Remove category succesfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "unFollow successfully!"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 200
+                    description: The HTTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata (optional).
+        400:
+          description: Params invalid.
+        404:
+          description: Category's not found
+        401:
+          description: "User is not autherized (only for Admin)"
+    patch:
+      summary: Update a category by Id
+      operationId: updateCategory
+      tags:
+        - categories
+      security:
+        - BearerAuth: []
+      description: "This feature is only for `[ADMIN]`"
+      parameters:
+        - name: id
+          in: path
+          description: "The category id that you want to update"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+      requestBody:
+        description: "The information of category for updating"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_name:
+                  type: string
+                  description: The title of the category
+                  example: "Lập trình"
+                category_description:
+                  type: string
+                  description: The content of the category
+                  example: "Lập trình là việc một người sử dụng các ngôn ngữ lập trình, các đoạn mã hay các tiện ích có sẵn để tạo ra một phần mềm máy tính, trò chơi, trang web, ứng dụng,... Điều này giúp người dùng đơn giản hóa việc thực hiện mệnh lệnh với laptop, hay dễ dàng tương tác với nhau thông qua các thiết bị điện tử. Và những người làm công việc lập trình thì được gọi chung là lập trình viên."
+      responses:
+        200:
+          description: Remove category succesfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "unFollow successfully!"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 200
+                    description: The HTTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata (optional).
+        400:
+          description: Params invalid.
+        404:
+          description: Category's not found
+        401:
+          description: "User is not autherized (only for Admin)"
+  /likes:
+    post:
+      summary: Like a post
+      tags:
+        - likes
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: The id of post you want to like
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                postId:
+                  type: string
+                  format: MongoId
+                  example: "65753dafda906132b3d165b2"
+              required:
+                - postId
+      responses:
+        201:
+          description: Like successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Like post succesfully!"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 201
+                    description: The HTTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata (optional).
+        400:
+          description: Input invalid.
+        default:
+          description: Check again all things
+  /likes/{id}:
+    delete:
+      summary: Unlike a post
+      tags:
+        - likes
+      parameters:
+        - name: id
+          in: path
+          description: "The like id that you want to delete"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        201:
+          description: Unlike successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Unlike post succesfully!"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 201
+                    description: The HTTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata (optional).
+        400:
+          description: Input invalid.
+        404:
+          description: Like is not found
+        401:
+          description: "Dont have permission"
+  /comments:
+    post:
+      summary: Comments a post
+      tags:
+        - comments
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: The id of post you want to comment
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cmt_post_id:
+                  type: string
+                  format: MongoId
+                  example: "657914cf7cb453ba2324e515"
+                cmt_content:
+                  type: string
+                  example: "Việt Nam mãi đỉnh 🐲"
+              required:
+                - cmt_post_id
+                - cmt_content
+      responses:
+        201:
+          description: Like successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    description: Whether an error occurred during login
+                    default: false
+                  message:
+                    type: string
+                    description: Comment success message
+                    default: "Comment succesfully!"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code of the response
+                    default: 201
+                  metaData:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        format: MongoId
+                        default: 657d36ac5548403d1a0d22c3
+                      cmt_post_id:
+                        type: string
+                        format: MongoId
+                        example: "657947a2573b60f6f8be8816"
+                      cmt_user_id:
+                        type: string
+                        format: MongoId
+                        example: "cmt_user_id"
+                      cmt_likes_count:
+                        type: integer
+                        example: 0
+                      cmt_likes:
+                        type: array
+                        example: []
+                      cmt_content:
+                        type: string
+                        example: "Việt Nam mãi đỉnh 🐲"
+                      status:
+                        type: boolean
+                        example: true
+                      createdAt:
+                        format: ISO8601
+                        type: string
+                        example: "2023-12-16T05:33:32.094Z"
+                      updatedAt:
+                        format: ISO8601
+                        type: string
+                        example: "2023-12-16T05:33:32.094Z"
+                      __v:
+                        type: integer
+                        example: 0
+        400:
+          description: Input invalid. (Post is not active)
+        401:
+          description: "Dont have permission"
+        404:
+          description: Post is not found
+  /comments/{id}:
+    delete:
+      summary: Comments a post
+      tags:
+        - comments
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: "The commentId that you want to remove"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+      responses:
+        201:
+          description: Uncomment successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    description: Whether an error occurred during login
+                    default: false
+                  message:
+                    type: string
+                    description: Uncomment success message
+                    default: "Uncomment succesfully!"
+                  statusCode:
+                    type: integer
+                    description: HTTP status code of the response
+                    default: 201
+                  metaData:
+                    type: object
+        400:
+          description: Input invalid
+        401:
+          description: "Dont have permission"
+  /series:
+    post:
+      tags:
+        - series
+      summary: Create a new series
+      security:
+        - BearerAuth: []
+      description: This can only be done by the logged in user.
+      operationId: createNewSeries
+      requestBody:
+        required: true
+        description: Details of the series to be created
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                series_name:
+                  type: string
+                  example: "lập trình c++ cùng Tuấn Ngọc và Thùy Trinh"
+                series_post_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: MongoId
+                  example:
+                    ["6565642195db77dfcaeb8f5c", "656574e9dd0dd70b52ac9eca"]
+                series_status:
+                  type: boolean
+                  default: true
+              required:
+                - series_name
+                - series_post_ids
+      responses:
+        201:
+          description: successful create new series
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Create series succesfully!
+                  statusCode:
+                    type: integer
+                    example: 201
+                  metaData:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: 658069165e2355bdcc78df5d
+                      series_name:
+                        type: string
+                        example: lập trình c++ cùng tuấn ngọcc
+                      series_user_id:
+                        type: string
+                        example: 656aef9f202cfe899dc93c59
+                      series_post_ids:
+                        type: array
+                        items:
+                          type: string
+                          example:
+                            [
+                              "65753dafda906132b3d165b2",
+                              "657947a2573b60f6f8be8816",
+                            ]
+                      series_status:
+                        type: boolean
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                      __v:
+                        type: integer
+        400:
+          description: Invalid input
+        default:
+          description: Unexpected error
+    get:
+      tags:
+        - series
+      summary: Get all series in system
+      security:
+        - BearerAuth: []
+      description: You can filter by above parameters
+      operationId: getAllSeries
+      parameters:
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "ctime"
+              - "atime"
+            default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
+        - name: limit
+          in: query
+          description: "Limit the number of results"
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          description: "Offset for pagination"
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: startDate
+          in: query
+          description: "Start date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: endDate
+          in: query
+          description: "End date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: authorId
+          in: query
+          description: "End date for filtering"
+          required: false
+          schema:
+            type: string
+            format: MongoId
+        - name: keyword
+          in: query
+          description: The keyword to filter the returned content
+          required: false
+          schema:
+            type: string
+            format: MongoId
+
+      responses:
+        "200":
+          description: Successful get list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Follow successfully"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 201
+                    description: The HTTP status code.
+                  metaData:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "657583bc2a468f68e40540de"
+                            follower_user_id:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  example: "656aef9f202cfe899dc93c59"
+                                user_nickname:
+                                  type: string
+                                  example: "Tuấn Anh"
+                            status:
+                              type: boolean
+                              example: false
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-12-10T09:24:12.867Z"
+                        - type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: "655f5babe180cb0e0e624a6e"
+                            follower_user_id:
+                              type: object
+                              properties:
+                                _id:
+                                  type: string
+                                  example: "655f35d72e1e26e826d8ef4f"
+                                user_nickname:
+                                  type: string
+                                  example: "AnhThu"
+                            status:
+                              type: boolean
+                              example: true
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2023-11-23T14:03:23.389Z"
+        "400":
+          description: Invalid input
+        401:
+          description: Autherized error
+        default:
+          description: Something went wrong
+  /users/{id}/series:
+    get:
+      tags:
+        - users
+      summary: Get all list of series of this user
+      security:
+        - BearerAuth: []
+      description: "This features use for `[ALL USER]` or `[USER]`<br>
+        Case:<br>
+        - `[ALL USER]`: Only see the follower of user that are ***active***<br>
+        - `[USER]`: Only see the follower of user that are either ***blocked*** or ***active***"
+      operationId: getAllSeriesOfUser
+      parameters:
+        - name: id
+          in: path
+          description: "The userId that you want to get list of series"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "ctime"
+              - "atime"
+            default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
+        - name: limit
+          in: query
+          description: "Limit the number of results"
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          description: "Offset for pagination"
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: startDate
+          in: query
+          description: "Start date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: endDate
+          in: query
+          description: "End date for filtering"
+          required: false
+          schema:
+            type: string
+            format: "yyyy-dd-mm"
+        - name: status
+          in: query
+          description: "**True** for active and **False** for blocked"
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Successful get list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - type: object
+                      properties:
+                        _id:
+                          type: string
+                          example: "6580f41e3a80811028a0372c"
+                        series_name:
+                          type: string
+                          example: "lập trình c++ cùng tuấn ngọc"
+                        series_user_id:
+                          type: string
+                          example: "656a003aca3b51815e15a94a"
+                        series_post_ids:
+                          type: array
+                          items:
+                            type: string
+                          example:
+                            [
+                              "657947a2573b60f6f8be8816",
+                              "65753dafda906132b3d165b2",
+                            ]
+                        series_status:
+                          type: boolean
+                          example: true
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: "2023-12-19T01:38:38.176Z"
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          example: "2023-12-19T01:44:31.097Z"
+                    - type: object
+                      properties:
+                        _id:
+                          type: string
+                          example: "65815138d17a0259dfa3018c"
+                        series_name:
+                          type: string
+                          example: "lập trình c# cùng tuấn ngọc"
+                        series_user_id:
+                          type: string
+                          example: "656a003aca3b51815e15a94a"
+                        series_post_ids:
+                          type: array
+                          items:
+                            type: string
+                          example: ["65753dafda906132b3d165b2"]
+                        series_status:
+                          type: boolean
+                          example: true
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: "2023-12-19T01:38:38.176Z"
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          example: "2023-12-19T01:44:31.097Z"
+        "400":
+          description: Invalid input
+        default:
+          description: Check again query params
+
+  /series/{id}/posts:
+    post:
+      tags:
+        - series
+      summary: Add posts into a series
+      security:
+        - BearerAuth: []
+      description: Add new post into the series by id of series
+      operationId: addPostsIntoSeries
+      parameters:
+        - name: id
+          in: path
+          description: ID of series to add posts into
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Array of ObjectId of posts that you want to add into the series
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                series_post_ids:
+                  type: array
+                  format: MongoId
+                  example:
+                    ["657ff93c2c44374e0917e8cc", "657947a2573b60f6f8be8816"]
+      responses:
+        201:
+          description: Add posts into series successfully!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                  message:
+                    type: string
+                    example: Create series succesfully!
+                  statusCode:
+                    type: integer
+                    example: 201
+                  metaData:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: 658069165e2355bdcc78df5d
+                      series_name:
+                        type: string
+                        example: lập trình c++ cùng tuấn ngọcc
+                      series_user_id:
+                        type: string
+                        example: 656aef9f202cfe899dc93c59
+                      series_post_ids:
+                        type: array
+                        items:
+                          type: string
+                          example:
+                            [
+                              "65753dafda906132b3d165b2",
+                              "657947a2573b60f6f8be8816",
+                              "657ff93c2c44374e0917e8cc",
+                            ]
+                      series_status:
+                        type: boolean
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                      __v:
+                        type: integer
+        400:
+          description: Invalid input
+        401:
+          description: Not be Autherized
+        404:
+          description: Series is not found
+    delete:
+      tags:
+        - series
+      summary: Remove posts from a series
+      security:
+        - BearerAuth: []
+      description: This can only be done by the logged in user.
+      operationId: removePostsFromSeries
+      parameters:
+        - name: id
+          in: path
+          description: ID of series to remove posts from
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Array of ObjectId of posts that you want to remove from the series.
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                series_post_ids:
+                  type: array
+                  format: MongoId
+                  example:
+                    ["657ff93c2c44374e0917e8cc", "657947a2573b60f6f8be8816"]
+      responses:
+        201:
+          description: Remove posts from series successfully. It will return the series that had **remove** the post
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: 658069165e2355bdcc78df5d
+                  series_name:
+                    type: string
+                    example: lập trình c++ cùng tuấn ngọcc
+                  series_user_id:
+                    type: string
+                    example: 656aef9f202cfe899dc93c59
+                  series_post_ids:
+                    type: array
+                    items:
+                      type: string
+                      example:
+                        ["657947a2573b60f6f8be8816", "657ff93c2c44374e0917e8cc"]
+                  series_status:
+                    type: boolean
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+                  __v:
+                    type: integer
+        404:
+          description: Series not found
+        401:
+          description: Not be Autherized
+  /series/{id}:
+    delete:
+      summary: Delete a series by Id
+      operationId: deleteSeriesById
+      tags:
+        - series
+      security:
+        - BearerAuth: []
+      description: This can only be done by the logged in user.
+      parameters:
+        - name: id
+          in: path
+          description: "The series id that you want to remove"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+      responses:
+        200:
+          description: Update series succesfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Delete series succesfully!"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 200
+                    description: The HTzlTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata (optional).
+        400:
+          description: Params invalid.
+        404:
+          description: Series is not found
+        401:
+          description: "User is not autherized"
+    patch:
+      summary: Update a series by Id
+      operationId: updateSeriesById
+      tags:
+        - series
+      security:
+        - BearerAuth: []
+      description: This can only be done by the logged in user.
+      requestBody:
+        description: The information that you need to update (optional, select the field that you want to reset)
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                series_name:
+                  type: string
+                  example: "lập trình c++ trong vòng 7 ngày"
+                series_status:
+                  type: boolean
+      parameters:
+        - name: id
+          in: path
+          description: "The series id that you want to update"
+          required: true
+          schema:
+            format: MongoId
+            type: string
+      responses:
+        200:
+          description: Update succesfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    default: false
+                    description: Whether there was an error.
+                  message:
+                    type: string
+                    default: "Update series successfully!"
+                    description: The message describing the result.
+                  statusCode:
+                    type: integer
+                    default: 200
+                    description: The HTTP status code.
+                  metaData:
+                    type: object
+                    description: Additional metadata (optional).
+                    properties:
+                      _id:
+                        type: string
+                        example: 658069165e2355bdcc78df5d
+                      series_name:
+                        type: string
+                        example: lập trình c++ cùng tuấn ngọcc
+                      series_user_id:
+                        type: string
+                        example: 656aef9f202cfe899dc93c59
+                      series_post_ids:
+                        type: array
+                        items:
+                          type: string
+                          example:
+                            [
+                              "657947a2573b60f6f8be8816",
+                              "657ff93c2c44374e0917e8cc",
+                            ]
+                      series_status:
+                        type: boolean
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                      __v:
+                        type: integer
+        400:
+          description: Params invalid.
+        401:
+          description: Autherized error
+        404:
+          description: Series's not found
+components:
+  schemas:
+    Users:
+      type: object
+      properties:
+        user_nickname:
+          type: string
+          maxLength: 100
+        user_email:
+          type: string
+        user_password:
+          type: string
+        user_profilePhotoURL:
+          type: string
+        user_website:
+          type: string
+        user_bio:
+          type: string
+        items:
+          type: string
+        user_following_count:
+          type: number
+        user_follower_count:
+          type: number
+        user_gender:
+          type: string
+          enum:
+            - male
+            - female
+            - unknown
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+    Posts:
+      type: object
+      properties:
+        post_user_id:
+          type: string
+        post_title:
+          type: string
+        post_content:
+          type: string
+        post_thumb_url:
+          type: string
+        post_likes_count:
+          type: number
+        post_description:
+          type: string
+        post_coments_count:
+          type: number
+        post_categories:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum:
+            - active
+            - pending
+            - blocked
+        post_series_ids:
+          type: array
+          items:
+            type: string
+    Comments:
+      type: object
+      properties:
+        cmt_post_id:
+          type: string
+        cmt_user_id:
+          type: string
+        cmt_content:
+          type: string
+        cmt_likes_count:
+          type: number
+        cmt_likes:
+          type: array
+          items:
+            type: string
+        status:
+          type: boolean
+    Categories:
+      type: object
+      properties:
+        category_name:
+          type: string
+        category_description:
+          type: string
+        category_post_count:
+          type: number
+    Likes:
+      type: object
+      properties:
+        like_user_id:
+          type: string
+        like_post_id:
+          type: string
+    Follows:
+      type: object
+      properties:
+        follower_user_id:
+          type: string
+        following_user_id:
+          type: string
+        status:
+          type: boolean
+    Series:
+      type: object
+      properties:
+        series_name:
+          type: string
+        series_user_id:
+          type: string
+        series_post_ids:
+          type: array
+          items:
+            type: string
+        series_status:
+          type: boolean
+    ApiKeys:
+      type: object
+      properties:
+        key:
+          type: string
+        status:
+          type: boolean
+        permissions:
+          type: array
+          items:
+            type: string
+    Otps:
+      type: object
+      properties:
+        email:
+          type: string
+        otp:
+          type: string
+        createdAt:
+          type: string
+    Keys:
+      type: object
+      properties:
+        user_id:
+          type: string
+        public_key:
+          type: string
+        used_refresh_tokens:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
